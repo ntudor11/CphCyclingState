@@ -12,7 +12,6 @@ const App = () => {
         <NavBar />
         <Switch>
           <Route exact path="/" component={BikeLaneMap} />
-
           <Route exact path="/weather" component={WeatherStats} />
         </Switch>
       </div>

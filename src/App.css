@@ -36,3 +36,30 @@
     transform: rotate(360deg);
   }
 }
+
+.mapContainer {
+  top: 20px;
+  width: 80%;
+  height: 70vh;
+  left: 0;
+  bottom: 0;
+  display: block;
+  margin: 0 auto;
+}
+
+.marker {
+  display: block;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer !important;
+  padding: 0;
+}
+
+.mapboxgl-popup {
+  width: 200px;
+}
+
+.mapboxgl-popup-content {
+  text-align: center;
+  font-family: 'Open Sans', sans-serif;
+}

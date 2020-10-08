@@ -52,36 +52,28 @@ export default function TemporaryDrawer() {
           <ListItemIcon>
             <MapIcon />
           </ListItemIcon>
-          <ListItemText
-            primary={
-              <NavLink
-                exact
-                activeClassName="active"
-                to="/"
-                className="ml-auto nav-link underline-from-center"
-              >
-                Bike Lanes Map
-              </NavLink>
-            }
-          />
+          <NavLink
+            exact
+            activeClassName="active"
+            to="/"
+            className="ml-auto nav-link underline-from-center"
+          >
+            <ListItemText> Bike Lanes Map </ListItemText>
+          </NavLink>
         </ListItem>
 
         <ListItem button>
           <ListItemIcon>
             <BarChartIcon />
           </ListItemIcon>
-          <ListItemText
-            primary={
-              <NavLink
-                exact
-                activeClassName="active"
-                to="/weather"
-                className="ml-auto nav-link underline-from-center"
-              >
-                Weather Stats
-              </NavLink>
-            }
-          />
+          <NavLink
+            exact
+            activeClassName="active"
+            to="/weather"
+            className="ml-auto nav-link underline-from-center"
+          >
+            <ListItemText>Weather Stats</ListItemText>
+          </NavLink>
         </ListItem>
       </List>
     </div>

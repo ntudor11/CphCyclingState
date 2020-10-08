@@ -1,83 +1,39 @@
 import React, { Component } from "react";
 import mapboxgl from "mapbox-gl";
-import RoomIcon from "@material-ui/icons/Room";
 
 mapboxgl.accessToken =
   "pk.eyJ1IjoibnR1ZG9yMTEiLCJhIjoiY2tnMTB3dmZwMDRpcjJ5bjF2eGdxMzgxZCJ9.YnhPGs1aLU7MBKeUnW-cnQ";
 
-// demo data below
-var geojson = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      properties: {
-        message: "Foo",
-        iconSize: [60, 60]
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [-66.324462890625, -16.024695711685304]
-      }
-    },
-    {
-      type: "Feature",
-      properties: {
-        message: "Bar",
-        iconSize: [50, 50]
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [-61.2158203125, -15.97189158092897]
-      }
-    },
-    {
-      type: "Feature",
-      properties: {
-        message: "Baz",
-        iconSize: [40, 40]
-      },
-      geometry: {
-        type: "Point",
-        coordinates: [-63.29223632812499, -18.28151823530889]
-      }
-    }
-  ]
-};
+let map = {};
 
 // Using a class component as functional component cannot find mapContainer of undefined
 class MapLayer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lng: 5,
-      lat: 34,
-      zoom: 2
+      lng: 12.199226,
+      lat: 55.764184,
+      zoom: 8,
+      data: []
     };
   }
 
   componentDidMount() {
-    const map = new mapboxgl.Map({
+    try {
+      fetch(
+        "https://wfs-kbhkort.kk.dk/k101/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=k101:supercykelsti_inspektion_foto&SRSNAME=EPSG:4326&outputFormat=application%2Fjson"
+      )
+        .then(data => data.json())
+        .then(data => this.setState({ data }));
+    } catch (e) {
+      console.log(e);
+    }
+
+    map = new mapboxgl.Map({
       container: this.mapContainer,
       style: "mapbox://styles/mapbox/streets-v11",
       center: [this.state.lng, this.state.lat],
       zoom: this.state.zoom
-    });
-
-    geojson.features.forEach(marker => {
-      new mapboxgl.Marker()
-        .setLngLat(marker.geometry.coordinates)
-        .setPopup(
-          new mapboxgl.Popup({ offset: 25 }) // add popups
-            .setHTML(
-              "<h3>" +
-                marker.properties.message +
-                "</h3><p>" +
-                marker.geometry.type +
-                "</p>"
-            )
-        )
-        .addTo(map);
     });
 
     map.on("move", () => {
@@ -87,6 +43,27 @@ class MapLayer extends Component {
         zoom: map.getZoom().toFixed(2)
       });
     });
+  }
+
+  componentDidUpdate(prevState) {
+    const { data } = this.state;
+    if (prevState.data !== data) {
+      data.features.forEach(marker => {
+        new mapboxgl.Marker()
+          .setLngLat(marker.geometry.coordinates[0])
+          .setPopup(
+            new mapboxgl.Popup({ offset: 25 }) // add popups
+              .setHTML(
+                "<h3>" +
+                  marker.properties.rute_navn +
+                  "</h3><p>" +
+                  marker.properties.komnavn +
+                  "</p>"
+              )
+          )
+          .addTo(map);
+      });
+    }
   }
 
   render() {

@@ -6,8 +6,6 @@ mapboxgl.accessToken =
 
 let map = {};
 
-let selectedCoords = [];
-
 // Using a class component as functional component cannot find mapContainer of undefined
 class MapLayer extends Component {
   constructor(props) {
@@ -49,33 +47,7 @@ class MapLayer extends Component {
 
   componentDidUpdate(prevState) {
     const { data } = this.state;
-    if (prevState.data !== data) {
-      data.features.forEach(marker => {
-        var el = document.createElement("div");
-        el.className = "marker";
-        el.style.width = "10px";
-        el.style.height = "10px";
-        el.style.color = "red";
-        el.style.backgroundColor = "#fff";
-        el.style.border = "1px solid #ccc";
-        el.addEventListener("click", function() {
-          selectedCoords.push(marker.geometry.coordinates[0]);
-        });
-        new mapboxgl.Marker(el)
-          .setLngLat(marker.geometry.coordinates[0])
-          .setPopup(
-            new mapboxgl.Popup({ offset: 25 }) // add popups
-              .setHTML(
-                "<h3>" +
-                  marker.properties.rute_navn +
-                  "</h3><p>" +
-                  marker.properties.komnavn +
-                  "</p>"
-              )
-          )
-          .addTo(map);
-      });
-    }
+    this.props.onPinClick(prevState, data, map);
   }
 
   render() {

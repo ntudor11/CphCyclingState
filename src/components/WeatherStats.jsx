@@ -51,23 +51,81 @@ const WeatherStats = props => {
 
   const data = [temperatureData, rainData];
 
+  const symbols = new Set();
+
+  state.properties &&
+    state.properties.timeseries.forEach(point => {
+      // console.log(point.data);
+      symbols.add(
+        point.data.next_1_hours && point.data.next_1_hours.summary.symbol_code
+      );
+      symbols.add(
+        point.data.next_6_hours && point.data.next_6_hours.summary.symbol_code
+      );
+      symbols.add(
+        point.data.next_12_hours && point.data.next_12_hours.summary.symbol_code
+      );
+    });
+
+  const getKeyFromVal = (object, value, str = "") => {
+    return Object.keys(object !== undefined && object).find(key =>
+      str !== "" ? key === str : object[key] === value
+    );
+  };
+
+  const { details } =
+    (state.properties && state.properties.timeseries[0].data.instant) || {};
+
+  const { units } = (state.properties && state.properties.meta) || {};
+
+  const { next_1_hours } =
+    (state.properties && state.properties.timeseries[0].data) || {};
+
+  const currentTime = [
+    {
+      value: details && details.air_temperature,
+      unit: units && units.air_temperature,
+      kpi: getKeyFromVal(units, units !== undefined && units.air_temperature)
+    },
+    {
+      value: details && details.wind_speed,
+      unit: units && units.wind_speed,
+      kpi: getKeyFromVal(units, units !== undefined && units.wind_speed)
+    },
+    {
+      value: next_1_hours && next_1_hours.details.probability_of_precipitation,
+      unit: units && units.probability_of_precipitation,
+      kpi: getKeyFromVal(
+        units,
+        units !== undefined && units.probability_of_precipitation,
+        "probability_of_precipitation"
+      )
+    },
+    {
+      value: next_1_hours && next_1_hours.summary.symbol_code,
+      unit: "",
+      kpi: next_1_hours && next_1_hours.summary.symbol_code
+    }
+  ];
+
+  // return gui component for each current kpi
+  const currentKpi = kpis =>
+    kpis.map(kpi => (
+      <Grid item xs={6} sm={3}>
+        <h4>
+          {kpi.value} {kpi.unit}
+        </h4>
+        <p>{kpi.kpi}</p>
+      </Grid>
+    ));
+
+  const formatString = str => {
+    return str.replace(/_/g, " ").replace(/^\w/, c => c.toUpperCase());
+  };
+
   return (
     <Grid container spacing={1}>
-      <Grid item xs={6} sm={3}>
-        <p>a</p>
-      </Grid>
-
-      <Grid item xs={6} sm={3}>
-        <p>a</p>
-      </Grid>
-
-      <Grid item xs={6} sm={3}>
-        <p>a</p>
-      </Grid>
-
-      <Grid item xs={6} sm={3}>
-        <p>a</p>
-      </Grid>
+      {currentKpi(currentTime)}
 
       <Grid item xs={12}>
         <h3>
@@ -114,7 +172,9 @@ const WeatherStats = props => {
                       dataSet.map(inDataSet => Object.keys(inDataSet)[1])[0]
                     }
                     name={`${
-                      dataSet.map(inDataSet => Object.keys(inDataSet)[1])[0]
+                      dataSet.map(inDataSet =>
+                        formatString(Object.keys(inDataSet)[1])
+                      )[0]
                     } (${unit})`}
                     stroke="#16a5b9"
                     activeDot={{ r: 8 }}

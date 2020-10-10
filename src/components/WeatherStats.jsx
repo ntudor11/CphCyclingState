@@ -37,7 +37,7 @@ const WeatherStats = props => {
     state.properties.timeseries.forEach(point => {
       const tempDataPoint = {
         name: new Date(point.time).toLocaleString(),
-        temperature: point.data.instant.details.air_temperature
+        air_temperature: point.data.instant.details.air_temperature
       };
       const rainDataPoint = {
         name: new Date(point.time).toLocaleString(),
@@ -53,41 +53,77 @@ const WeatherStats = props => {
 
   return (
     <Grid container spacing={1}>
+      <Grid item xs={6} sm={3}>
+        <p>a</p>
+      </Grid>
+
+      <Grid item xs={6} sm={3}>
+        <p>a</p>
+      </Grid>
+
+      <Grid item xs={6} sm={3}>
+        <p>a</p>
+      </Grid>
+
+      <Grid item xs={6} sm={3}>
+        <p>a</p>
+      </Grid>
+
       <Grid item xs={12}>
         <h3>
           Weather Forecast for coordinates: {lat} x {long}
         </h3>
       </Grid>
 
-      {data.map(dataSet => (
-        <Grid item xs={12} sm={6}>
-          <ResponsiveContainer width="100%" height={400}>
-            <LineChart
-              width={500}
-              height={300}
-              data={dataSet}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Line
-                type="monotone"
-                dataKey={dataSet.map(inDataSet => Object.keys(inDataSet)[1])[0]}
-                stroke="#16a5b9"
-                activeDot={{ r: 8 }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        </Grid>
-      ))}
+      {state.properties &&
+        // tweaks for appending the unit of measurement
+        data.map(dataSet => {
+          const i = new Set();
+          let unit = "";
+          dataSet.map(inDataSet => i.add(Object.keys(inDataSet)[1])[0]);
+          for (let [key, value] of Object.entries(
+            state.properties.meta.units
+          )) {
+            if (i.has(key)) {
+              unit = value;
+            }
+          }
+
+          return (
+            <Grid item xs={12} sm={6} key={unit}>
+              <ResponsiveContainer width="100%" height={400}>
+                <LineChart
+                  width={500}
+                  height={300}
+                  data={dataSet}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Line
+                    type="monotone"
+                    dataKey={
+                      dataSet.map(inDataSet => Object.keys(inDataSet)[1])[0]
+                    }
+                    name={`${
+                      dataSet.map(inDataSet => Object.keys(inDataSet)[1])[0]
+                    } (${unit})`}
+                    stroke="#16a5b9"
+                    activeDot={{ r: 8 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </Grid>
+          );
+        })}
     </Grid>
   );
 };

@@ -140,7 +140,7 @@ const WeatherStats = props => {
             </span>
           )}
         </h4>
-        <p>{kpi.kpi}</p>
+        <p>{kpi.kpi && formatString(kpi.kpi)}</p>
       </Grid>
     ));
 

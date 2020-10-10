@@ -63,3 +63,7 @@
   text-align: center;
   font-family: 'Open Sans', sans-serif;
 }
+
+.weatherIcon {
+  width: 50px;
+}

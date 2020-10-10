@@ -11,6 +11,12 @@ import {
   ResponsiveContainer
 } from "recharts";
 
+const importAll = r => {
+  let images = {};
+  r.keys().map(item => (images[item.replace("./", "")] = r(item)));
+  return images;
+};
+
 const WeatherStats = props => {
   const [state, setState] = useState({});
 
@@ -29,6 +35,10 @@ const WeatherStats = props => {
       console.log(e);
     }
   }, [lat, long]);
+
+  const images = importAll(
+    require.context("../images", false, /\.(png|jpe?g|svg)$/)
+  );
 
   let temperatureData = [];
   let rainData = [];
@@ -66,6 +76,11 @@ const WeatherStats = props => {
         point.data.next_12_hours && point.data.next_12_hours.summary.symbol_code
       );
     });
+
+  const symbolsArr = Array.from(symbols)
+    .filter(s => s !== undefined)
+    .sort();
+  console.log(symbolsArr);
 
   const getKeyFromVal = (object, value, str = "") => {
     return Object.keys(object !== undefined && object).find(key =>
@@ -113,7 +128,17 @@ const WeatherStats = props => {
     kpis.map(kpi => (
       <Grid item xs={6} sm={3}>
         <h4>
-          {kpi.value} {kpi.unit}
+          {kpi.unit === "" ? (
+            <img
+              className="weatherIcon"
+              src={images[`${kpi.value}.svg`]}
+              alt={kpi.value}
+            />
+          ) : (
+            <span>
+              {kpi.value} {kpi.unit}
+            </span>
+          )}
         </h4>
         <p>{kpi.kpi}</p>
       </Grid>

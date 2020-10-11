@@ -1,6 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import MapLayer from "./MapLayer";
+import logo from "../images/ccsLogo.png";
 
 const BikeLaneMap = props => {
   const { onPinClick } = props;
@@ -8,7 +9,11 @@ const BikeLaneMap = props => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} sm={6}>
-        <h1>Copenhagen Cycling State</h1>
+        <img
+          src={logo}
+          alt="Copenhagen Cycling State Logo"
+          className="appLogoFront"
+        />
 
         <p>
           Summer or winter, day or night, the most used means of transportation

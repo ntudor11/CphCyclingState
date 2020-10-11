@@ -1,10 +1,8 @@
 ## Copenhagen Cycling State
 
-![App Screenshot](src/images/app-screen.png)
+![App Screenshot](src/images/app-screenshot.png)
 
 ### About
-
-<img src="public/ccsLogo.ico" alt="logo" style="float: left; width: 150px"/>
 
 The project is a React application for tracking cycling conditions in Copenhagen, Denmark.
 

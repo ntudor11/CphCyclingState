@@ -9,6 +9,7 @@ import "./App.css";
 const App = () => {
   const [coords, setCoords] = useState([]);
 
+  // BikeLaneMap prop defined below for being able to lift coordinates state up
   const onPinClick = (prevState, data, map) => {
     if (prevState.data !== data) {
       data.features.forEach(marker => {
@@ -31,6 +32,14 @@ const App = () => {
                   marker.properties.rute_navn +
                   "</h3><p>" +
                   marker.properties.komnavn +
+                  "</p>" +
+                  "<p>Status: " +
+                  marker.properties.beskrivelse +
+                  "</p>" +
+                  "<p>Date: " +
+                  new Date(
+                    marker.properties.inspektion_timestamp
+                  ).toLocaleString() +
                   "</p>"
               )
           )

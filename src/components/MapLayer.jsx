@@ -11,8 +11,8 @@ class MapLayer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lng: 12.199226,
-      lat: 55.764184,
+      lng: 12.474333447954205,
+      lat: 55.71148688070904,
       zoom: 8,
       data: []
     };
@@ -53,12 +53,6 @@ class MapLayer extends Component {
   render() {
     return (
       <div>
-        <div>
-          <div>
-            Longitude: {this.state.lng} | Latitude: {this.state.lat} | Zoom:{" "}
-            {this.state.zoom}
-          </div>
-        </div>
         <div ref={el => (this.mapContainer = el)} className="mapContainer" />
       </div>
     );

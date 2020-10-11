@@ -12,6 +12,7 @@ import {
   ResponsiveContainer
 } from "recharts";
 
+// importing weather icons
 const importAll = r => {
   let images = {};
   r.keys().map(item => (images[item.replace("./", "")] = r(item)));
@@ -23,6 +24,7 @@ const WeatherStats = props => {
 
   const classes = useStyles();
 
+  // destructure lat and long props received from the App component
   const { lat, long } = props;
 
   useEffect(() => {
@@ -37,13 +39,16 @@ const WeatherStats = props => {
     }
   }, [lat, long]);
 
+  // importing weather icons
   const images = importAll(
     require.context("../images", false, /\.(png|jpe?g|svg)$/)
   );
 
+  // empty arrays to be populated
   let temperatureData = [];
   let rainData = [];
 
+  // populate empty arrays to serve as data for each chart
   state.properties &&
     state.properties.timeseries.forEach(point => {
       const tempDataPoint = {
@@ -70,12 +75,11 @@ const WeatherStats = props => {
 
   const { details } =
     (state.properties && state.properties.timeseries[0].data.instant) || {};
-
   const { units } = (state.properties && state.properties.meta) || {};
-
   const { next_1_hours } =
     (state.properties && state.properties.timeseries[0].data) || {};
 
+  // array of objects showcasing the current weather conditions
   const currentTime = [
     {
       value: details && details.air_temperature,
@@ -197,13 +201,17 @@ const WeatherStats = props => {
   ) : (
     <div className={classes.root}>
       <Grid container spacing={0}>
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <h1>No content yet...</h1>
           <p>
             In order to view weather data, please navigate first to the Bike
-            Lanes Map and select a pin on the map. Then, navigate back to the
-            Weather Stats and you will be able to see the weather statistics for
-            the specific coordinates of the pin that you selected.
+            Lanes Map and select a pin on the map.
+          </p>
+
+          <p>
+            Then, navigate back to the Weather Stats and you will be able to see
+            the weather statistics for the specific coordinates of the pin that
+            you selected.
           </p>
 
           <p>

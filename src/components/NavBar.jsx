@@ -11,6 +11,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import MapIcon from "@material-ui/icons/Map";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import useStyles from "./UseStyles";
+import logo from "../images/ccsLogo.png";
 
 export default function TemporaryDrawer() {
   const classes = useStyles();
@@ -75,9 +76,21 @@ export default function TemporaryDrawer() {
   return (
     <div className={classes.root}>
       <React.Fragment>
-        <Button onClick={toggleDrawer(anchor, true)}>
-          <MenuIcon />
-        </Button>
+        <div className="navContainer">
+          <Button onClick={toggleDrawer(anchor, true)} className="navButton">
+            <MenuIcon />
+          </Button>
+          <div>
+            <NavLink
+              exact
+              activeClassName="active"
+              to="/"
+              className="ml-auto nav-link underline-from-center"
+            >
+              <img src={logo} alt="logo" className="appLogo" />
+            </NavLink>
+          </div>
+        </div>
         <Drawer
           anchor={anchor}
           open={state[anchor]}

@@ -1,18 +1,18 @@
+@font-face {
+  font-family: LatoRegular;
+  src: url(fonts/Lato-Regular.ttf);
+}
+
+@font-face {
+  font-family: LatoBold;
+  src: url(fonts/Lato-Bold.ttf);
+}
+
 .App {
   text-align: center;
   width:95%;
   margin: 0 auto;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  font-family: LatoRegular, arial, helvetica, sans-serif;
 }
 
 .App-header {
@@ -30,6 +30,11 @@
   color: #61dafb;
 }
 
+.appLogo {
+  float: right;
+  width: 50px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -40,9 +45,9 @@
 }
 
 .mapContainer {
-  top: 20px;
-  width: 80%;
-  height: 70vh;
+  /* top: 20px; */
+  width: 100%;
+  height: 90vh;
   left: 0;
   bottom: 0;
   display: block;
@@ -70,12 +75,32 @@
   width: 50px;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+.navButton {
+  /* display: block !important; */
+  float:left;
+  padding-top: 10px !important;
+}
+
+.navContainer {
+  border-bottom: 1px solid rgb(230, 230, 230);
+  height:50px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-align: left;
+  font-family: LatoBold, helvetica, arial, sans-serif;
+}
+
+a {
+  font-family: LatoRegular, helvetica, arial, sans-serif !important;
+}
+
+p {
   text-align: left;
 }
 
 .currentKpi:not(:last-child) {
-  border-right: 1px solid rgb(145, 145, 145);
+  border-right: 1px solid rgb(230, 230, 230);
   margin-top: 2em;
 }
 
@@ -85,7 +110,7 @@ p, h1, h2, h3, h4, h5, h6 {
 
 @media only screen and (max-width: 599px) {
   .currentKpi:not(:nth-last-child(1)):not(:nth-last-child(2)) {
-    border-bottom: 1px solid rgb(145, 145, 145);
+    border-bottom: 1px solid rgb(230, 230, 230);
   }
 
   .currentKpi:not(:nth-last-child(2)):not(:nth-last-child(4)) {

@@ -47,7 +47,7 @@ class MapLayer extends Component {
 
   componentDidUpdate(prevState) {
     const { data } = this.state;
-    this.props.onPinClick(prevState, data, map);
+    data.features && this.props.onPinClick(prevState, data, map);
   }
 
   render() {

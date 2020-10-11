@@ -24,8 +24,8 @@ const WeatherStats = props => {
 
   const classes = useStyles();
 
-  // destructure lat and long props received from the App component
-  const { lat, long } = props;
+  // destructure props received from the App component
+  const { lat, long, getAddress, address, geolocationAPIKey } = props;
 
   useEffect(() => {
     try {
@@ -34,10 +34,12 @@ const WeatherStats = props => {
       )
         .then(data => data.json())
         .then(data => setState(data));
+
+      !address.address && getAddress();
     } catch (e) {
       console.log(e);
     }
-  }, [lat, long]);
+  }, [lat, long, getAddress, address.address]);
 
   // importing weather icons
   const images = importAll(
@@ -141,9 +143,15 @@ const WeatherStats = props => {
         </Grid>
 
         <Grid item xs={12}>
-          <h3>
-            Forecast for coordinates: {lat} x {long}
-          </h3>
+          <h4>
+            Forecast for address:{" "}
+            {geolocationAPIKey
+              ? address.address
+              : "if you see this instead of an address, please consult the readme file to implement a Google Maps Geocoding API key."}
+          </h4>
+          <p>
+            Coordinates: {lat} x {long}
+          </p>
         </Grid>
 
         {state.properties &&

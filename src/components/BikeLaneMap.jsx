@@ -8,7 +8,7 @@ const BikeLaneMap = props => {
   return (
     <Grid container spacing={1}>
       <Grid item xs={12} sm={6}>
-        <h1>Biking Copenhagen</h1>
+        <h1>Copenhagen Cycling State</h1>
 
         <p>
           Summer or winter, day or night, the most used means of transportation

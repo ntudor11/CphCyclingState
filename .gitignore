@@ -18,6 +18,9 @@
 .env.test.local
 .env.production.local
 
+# api keys
+src/GeolocationApi.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

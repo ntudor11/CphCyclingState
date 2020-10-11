@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import mapboxgl from "mapbox-gl";
+import Geocode from "react-geocode";
+import GeolocationApi from "./GeolocationApi.json";
 import NavBar from "./components/NavBar";
 import BikeLaneMap from "./components/BikeLaneMap";
 import WeatherStats from "./components/WeatherStats";
@@ -8,6 +10,7 @@ import "./App.css";
 
 const App = () => {
   const [coords, setCoords] = useState([]);
+  const [address, setAddress] = useState({});
 
   // BikeLaneMap prop defined below for being able to lift coordinates state up
   const onPinClick = (prevState, data, map) => {
@@ -48,6 +51,23 @@ const App = () => {
     }
   };
 
+  // import Google Maps Geocoding API key - view readme for installation
+  const geolocationAPIKey =
+    process.env.GEOLOCATION_API_KEY || GeolocationApi.apiKey;
+
+  // set API key
+  Geocode.setApiKey(geolocationAPIKey);
+
+  // geocode coordinates to address
+  const getAddress = () => {
+    coords[1] &&
+      geolocationAPIKey &&
+      Geocode.fromLatLng(coords[1], coords[0]).then(response => {
+        const address = response.results[0].formatted_address;
+        setAddress({ address });
+      });
+  };
+
   return (
     <Router>
       <div className="App">
@@ -63,7 +83,14 @@ const App = () => {
             exact
             path="/weather"
             render={props => (
-              <WeatherStats {...props} lat={coords[1]} long={coords[0]} />
+              <WeatherStats
+                {...props}
+                lat={coords[1]}
+                long={coords[0]}
+                getAddress={getAddress}
+                address={address}
+                geolocationAPIKey={geolocationAPIKey}
+              />
             )}
           />
         </Switch>

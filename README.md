@@ -1,6 +1,6 @@
 ## Copenhagen Cycling State
 
-![App Screenshot](src/images/app-ss.png)
+![App Screenshot](src/images/app-screen.png)
 
 ### About
 

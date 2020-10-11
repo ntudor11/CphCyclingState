@@ -1,7 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import List from "@material-ui/core/List";
@@ -11,15 +10,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import MenuIcon from "@material-ui/icons/Menu";
 import MapIcon from "@material-ui/icons/Map";
 import BarChartIcon from "@material-ui/icons/BarChart";
-
-const useStyles = makeStyles({
-  list: {
-    width: 250
-  },
-  fullList: {
-    width: "auto"
-  }
-});
+import useStyles from "./UseStyles";
 
 export default function TemporaryDrawer() {
   const classes = useStyles();
@@ -82,7 +73,7 @@ export default function TemporaryDrawer() {
   const anchor = "left";
 
   return (
-    <div>
+    <div className={classes.root}>
       <React.Fragment>
         <Button onClick={toggleDrawer(anchor, true)}>
           <MenuIcon />

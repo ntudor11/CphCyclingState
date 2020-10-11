@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Grid from "@material-ui/core/Grid";
+import useStyles from "./UseStyles";
 import {
   LineChart,
   Line,
@@ -20,9 +21,9 @@ const importAll = r => {
 const WeatherStats = props => {
   const [state, setState] = useState({});
 
-  // const { lat, long } = props;
+  const classes = useStyles();
 
-  const [lat, long] = [55.764184, 12.199226];
+  const { lat, long } = props;
 
   useEffect(() => {
     try {
@@ -60,27 +61,6 @@ const WeatherStats = props => {
     });
 
   const data = [temperatureData, rainData];
-
-  const symbols = new Set();
-
-  state.properties &&
-    state.properties.timeseries.forEach(point => {
-      // console.log(point.data);
-      symbols.add(
-        point.data.next_1_hours && point.data.next_1_hours.summary.symbol_code
-      );
-      symbols.add(
-        point.data.next_6_hours && point.data.next_6_hours.summary.symbol_code
-      );
-      symbols.add(
-        point.data.next_12_hours && point.data.next_12_hours.summary.symbol_code
-      );
-    });
-
-  const symbolsArr = Array.from(symbols)
-    .filter(s => s !== undefined)
-    .sort();
-  console.log(symbolsArr);
 
   const getKeyFromVal = (object, value, str = "") => {
     return Object.keys(object !== undefined && object).find(key =>
@@ -125,8 +105,8 @@ const WeatherStats = props => {
 
   // return gui component for each current kpi
   const currentKpi = kpis =>
-    kpis.map(kpi => (
-      <Grid item xs={6} sm={3}>
+    kpis.map((kpi, i) => (
+      <Grid item xs={6} sm={3} key={i} className="currentKpi">
         <h4>
           {kpi.unit === "" ? (
             <img
@@ -148,68 +128,91 @@ const WeatherStats = props => {
     return str.replace(/_/g, " ").replace(/^\w/, c => c.toUpperCase());
   };
 
-  return (
-    <Grid container spacing={1}>
-      {currentKpi(currentTime)}
+  // conditional rendering - show weather data only if props are defined
+  return lat !== undefined ? (
+    <div className={classes.root}>
+      <Grid container spacing={1}>
+        <Grid container spacing={1}>
+          {currentKpi(currentTime)}
+        </Grid>
 
-      <Grid item xs={12}>
-        <h3>
-          Weather Forecast for coordinates: {lat} x {long}
-        </h3>
-      </Grid>
+        <Grid item xs={12}>
+          <h3>
+            Forecast for coordinates: {lat} x {long}
+          </h3>
+        </Grid>
 
-      {state.properties &&
-        // tweaks for appending the unit of measurement
-        data.map(dataSet => {
-          const i = new Set();
-          let unit = "";
-          dataSet.map(inDataSet => i.add(Object.keys(inDataSet)[1])[0]);
-          for (let [key, value] of Object.entries(
-            state.properties.meta.units
-          )) {
-            if (i.has(key)) {
-              unit = value;
+        {state.properties &&
+          // tweaks for appending the unit of measurement
+          data.map(dataSet => {
+            const i = new Set();
+            let unit = "";
+            dataSet.map(inDataSet => i.add(Object.keys(inDataSet)[1])[0]);
+            for (let [key, value] of Object.entries(
+              state.properties.meta.units
+            )) {
+              if (i.has(key)) {
+                unit = value;
+              }
             }
-          }
+            return (
+              <Grid item xs={12} sm={6} key={unit}>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart
+                    width={500}
+                    height={300}
+                    data={dataSet}
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey={
+                        dataSet.map(inDataSet => Object.keys(inDataSet)[1])[0]
+                      }
+                      name={`${
+                        dataSet.map(inDataSet =>
+                          formatString(Object.keys(inDataSet)[1])
+                        )[0]
+                      } (${unit})`}
+                      stroke="#16a5b9"
+                      activeDot={{ r: 8 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </Grid>
+            );
+          })}
+      </Grid>
+    </div>
+  ) : (
+    <div className={classes.root}>
+      <Grid container spacing={0}>
+        <Grid item xs={12}>
+          <h1>No content yet...</h1>
+          <p>
+            In order to view weather data, please navigate first to the Bike
+            Lanes Map and select a pin on the map. Then, navigate back to the
+            Weather Stats and you will be able to see the weather statistics for
+            the specific coordinates of the pin that you selected.
+          </p>
 
-          return (
-            <Grid item xs={12} sm={6} key={unit}>
-              <ResponsiveContainer width="100%" height={400}>
-                <LineChart
-                  width={500}
-                  height={300}
-                  data={dataSet}
-                  margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line
-                    type="monotone"
-                    dataKey={
-                      dataSet.map(inDataSet => Object.keys(inDataSet)[1])[0]
-                    }
-                    name={`${
-                      dataSet.map(inDataSet =>
-                        formatString(Object.keys(inDataSet)[1])
-                      )[0]
-                    } (${unit})`}
-                    stroke="#16a5b9"
-                    activeDot={{ r: 8 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </Grid>
-          );
-        })}
-    </Grid>
+          <p>
+            The weather data changes every time you click on a new pin on the
+            Bike Lanes Map.
+          </p>
+        </Grid>
+      </Grid>
+    </div>
   );
 };
 

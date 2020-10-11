@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  width:95%;
+  margin: 0 auto;
 }
 
 .App-logo {
@@ -66,4 +68,31 @@
 
 .weatherIcon {
   width: 50px;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+  text-align: left;
+}
+
+.currentKpi:not(:last-child) {
+  border-right: 1px solid rgb(145, 145, 145);
+  margin-top: 2em;
+}
+
+.currentKpi p, .currentKpi h4 {
+  text-align: center;
+}
+
+@media only screen and (max-width: 599px) {
+  .currentKpi:not(:nth-last-child(1)):not(:nth-last-child(2)) {
+    border-bottom: 1px solid rgb(145, 145, 145);
+  }
+
+  .currentKpi:not(:nth-last-child(2)):not(:nth-last-child(4)) {
+    border-right: 0px;
+  }
+
+  .currentKpi:not(:nth-last-child(3)):not(:nth-last-child(4)) {
+    margin-top: 0;
+  }
 }

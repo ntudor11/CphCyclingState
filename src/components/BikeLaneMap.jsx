@@ -12,12 +12,12 @@ const BikeLaneMap = props => {
 
         <p>
           Summer or winter, day or night, the most used means of transportation
-          in Copenhagen is the bycicle. Still, there are a few key aspects to
+          in Copenhagen is the bicycle. Still, there are a few key aspects to
           consider when commuting by bike.
         </p>
 
         <p>
-          This app aims to provide bycicle commuters and enthusiasts a way to
+          This app aims to provide bicycle commuters and enthusiasts a way to
           prepare for their commute, by providing users an interactive map with
           the status of each main bike lane within the Greater Copenhagen Area.
         </p>

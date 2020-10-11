@@ -63,8 +63,8 @@ const App = () => {
     coords[1] &&
       geolocationAPIKey &&
       Geocode.fromLatLng(coords[1], coords[0]).then(response => {
-        const address = response.results[0].formatted_address;
-        setAddress({ address });
+        const newAddress = response.results[0].formatted_address;
+        address.address !== newAddress && setAddress({ address: newAddress });
       });
   };
 

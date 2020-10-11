@@ -35,11 +35,11 @@ const WeatherStats = props => {
         .then(data => data.json())
         .then(data => setState(data));
 
-      !address.address && getAddress();
+      getAddress();
     } catch (e) {
       console.log(e);
     }
-  }, [lat, long, getAddress, address.address]);
+  }, [lat, long, getAddress]);
 
   // importing weather icons
   const images = importAll(
